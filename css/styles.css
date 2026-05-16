@@ -1,0 +1,426 @@
+/* ═══════════════════════════════════════════════════════
+   RED SEGURA — Estilos globales
+   Estructura de Datos II — Universidad del Norte
+════════════════════════════════════════════════════════ */
+
+/* ── Reset & Variables ─────────────────────────────── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg0: #060d1a;
+  --bg1: #0f1c2e;
+  --bg2: #162034;
+  --bg3: #1e2d42;
+  --border: #2a3d5a;
+  --text1: #e8edf5;
+  --text2: #8fa3bf;
+  --text3: #4a607a;
+  --c1: #6366f1;   /* BFS/DFS — indigo */
+  --c2: #f59e0b;   /* Dijkstra — amber */
+  --c3: #10b981;   /* Kruskal — emerald */
+  --c4: #ef4444;   /* Ford-Fulkerson — red */
+  --c5: #8b5cf6;   /* Final — violet */
+  --success: #22c55e;
+}
+
+body {
+  background: var(--bg0);
+  color: var(--text1);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Header ────────────────────────────────────────── */
+#header {
+  background: var(--bg1);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+#header h1 {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -.3px;
+}
+
+#header p {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+#header-btns {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+#seed-badge {
+  font-size: 10px;
+  color: var(--text3);
+  background: var(--bg3);
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-family: monospace;
+}
+
+/* ── Mission Navigation ────────────────────────────── */
+#mission-nav {
+  background: var(--bg1);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 20px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+#mission-nav::-webkit-scrollbar { display: none; }
+
+.m-tab {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text3);
+  padding: 6px 13px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all .2s;
+}
+
+.m-tab.active {
+  border-color: var(--active-c, var(--c1));
+  color: var(--active-c, var(--c1));
+  background: color-mix(in srgb, var(--active-c, var(--c1)) 12%, transparent);
+}
+
+.m-tab.done {
+  border-color: color-mix(in srgb, var(--active-c, var(--c1)) 50%, transparent);
+  color: color-mix(in srgb, var(--active-c, var(--c1)) 70%, transparent);
+}
+
+/* ── Layout ────────────────────────────────────────── */
+#layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 104px);
+}
+
+@media (max-width: 900px) {
+  #layout { grid-template-columns: 1fr; }
+}
+
+#left {
+  padding: 18px;
+  border-right: 1px solid var(--border);
+}
+
+#right {
+  padding: 18px;
+  overflow-y: auto;
+  max-height: calc(100vh - 104px);
+}
+
+/* ── Cards ─────────────────────────────────────────── */
+.card {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: 12px;
+}
+
+/* ── Mission Header ────────────────────────────────── */
+#mission-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#mission-title { font-size: 15px; font-weight: 800; }
+
+#mission-badge {
+  font-size: 11px;
+  color: var(--text2);
+  background: var(--bg3);
+  padding: 3px 9px;
+  border-radius: 5px;
+}
+
+#mission-desc {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+
+/* ── Buttons ───────────────────────────────────────── */
+.btn {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text2);
+  padding: 7px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all .15s;
+}
+
+.btn:hover {
+  background: var(--bg3);
+  color: var(--text1);
+}
+
+.btn.primary {
+  border-color: var(--btn-c, var(--c1));
+  color: var(--btn-c, var(--c1));
+  background: color-mix(in srgb, var(--btn-c, var(--c1)) 10%, transparent);
+}
+
+.btn.primary:hover {
+  background: color-mix(in srgb, var(--btn-c, var(--c1)) 20%, transparent);
+}
+
+.btn.success {
+  border-color: var(--success);
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 10%, transparent);
+}
+
+.btn-row {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+/* ── Form elements ─────────────────────────────────── */
+select {
+  background: var(--bg0);
+  border: 1px solid var(--border);
+  color: var(--text1);
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+label { font-size: 12px; color: var(--text2); }
+
+/* ── Log / Info boxes ──────────────────────────────── */
+.log-box {
+  background: var(--bg0);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 13px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.7;
+  min-height: 42px;
+}
+
+.log-box strong { color: var(--text1); }
+
+.result-box {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.result-success {
+  background: color-mix(in srgb, var(--success) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--success) 35%, transparent);
+}
+
+.result-info {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+}
+
+/* ── Graph SVG ─────────────────────────────────────── */
+#graph-wrap {
+  background: var(--bg0);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+#graph-svg { display: block; width: 100%; }
+
+.g-node { cursor: pointer; }
+
+/* ── Stats ─────────────────────────────────────────── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.stat-card {
+  background: var(--bg0);
+  border-radius: 8px;
+  padding: 10px 13px;
+}
+
+.stat-label { font-size: 10px; color: var(--text3); margin-bottom: 3px; }
+.stat-val   { font-size: 22px; font-weight: 800; }
+
+/* ── User list ─────────────────────────────────────── */
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 9px;
+  background: var(--bg0);
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+.behavior-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.user-name  { font-size: 12px; flex: 1; }
+.behavior-tag { font-size: 10px; font-weight: 600; }
+
+/* ── Edge pills ────────────────────────────────────── */
+.edge-pill {
+  display: inline-block;
+  background: var(--bg0);
+  border-radius: 5px;
+  padding: 3px 8px;
+  font-size: 10px;
+  color: var(--text3);
+  margin: 2px;
+}
+
+.edge-pill strong { color: var(--text2); }
+
+/* ── Guess buttons (Mission 1) ─────────────────────── */
+.guess-btn {
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  color: var(--text2);
+  padding: 6px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all .15s;
+  margin: 3px;
+}
+
+.guess-btn:hover {
+  border-color: var(--c4);
+  color: var(--c4);
+}
+
+/* ── Kruskal step rows ─────────────────────────────── */
+.step-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 11px;
+  margin-bottom: 3px;
+}
+
+.step-row.accepted {
+  background: color-mix(in srgb, var(--c3) 10%, transparent);
+}
+
+.step-row.rejected {
+  background: color-mix(in srgb, var(--c4) 6%, transparent);
+}
+
+/* ── Final mission grid ────────────────────────────── */
+.final-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* ── Help Modal ────────────────────────────────────── */
+#help-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #00000099;
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+
+#help-overlay.open { display: flex; }
+
+#help-modal {
+  background: var(--bg1);
+  border-radius: 14px;
+  padding: 24px;
+  max-width: 540px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+}
+
+.help-item {
+  border-left: 3px solid var(--hc);
+  padding-left: 13px;
+  margin-bottom: 16px;
+}
+
+.help-item h3 {
+  color: var(--hc);
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.help-item p {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.65;
+}
+
+.complexity {
+  display: inline-block;
+  background: color-mix(in srgb, var(--hc) 15%, transparent);
+  color: var(--hc);
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  margin-top: 5px;
+}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Red Segura — Estructura de Datos II</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     HEADER
+════════════════════════════════════════════ -->
+<div id="header">
+  <div>
+    <h1>🌐 Red Segura</h1>
+    <p>Estructura de Datos II — Universidad del Norte</p>
+  </div>
+  <div id="header-btns">
+    <span id="seed-badge"></span>
+    <button class="btn" onclick="regenerateGraph()" title="Generar nueva red aleatoria">🔀 Nueva red</button>
+    <button class="btn" onclick="openHelp()">📚 Ayuda</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════════ -->
+<div id="mission-nav"></div>
+
+<!-- ═══════════════════════════════════════════
+     MAIN LAYOUT
+════════════════════════════════════════════ -->
+<div id="layout">
+
+  <!-- LEFT: Graph + Mission Controls -->
+  <div id="left">
+    <div class="card">
+      <div id="mission-header">
+        <span id="mission-title"></span>
+        <span id="mission-badge"></span>
+      </div>
+      <p id="mission-desc"></p>
+      <div id="graph-wrap">
+        <svg id="graph-svg" viewBox="0 0 620 510"></svg>
+      </div>
+      <div id="mission-controls"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Info Panel -->
+  <div id="right">
+    <div class="card">
+      <div class="card-title">📊 Estado del Grafo</div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">Nodos (usuarios)</div>
+          <div class="stat-val" style="color:var(--c1)" id="stat-nodes">10</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Aristas (interacciones)</div>
+          <div class="stat-val" style="color:var(--c2)" id="stat-edges">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Misiones completadas</div>
+          <div class="stat-val" style="color:var(--c3)" id="stat-done">0 / 5</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Misión actual</div>
+          <div class="stat-val" style="color:var(--c5)" id="stat-cur">1</div>
+        </div>
+      </div>
+      <div id="behavior-rules" style="font-size:11px;color:var(--text2);line-height:1.9;border-top:1px solid var(--border);padding-top:10px"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">👥 Usuarios en la red</div>
+      <div id="user-list"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔗 Interacciones (peso = nivel de riesgo)</div>
+      <div id="edge-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     HELP MODAL
+════════════════════════════════════════════ -->
+<div id="help-overlay" onclick="closeHelp(event)">
+  <div id="help-modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h2 style="font-size:17px;font-weight:800">📚 Guía de Algoritmos</h2>
+      <button class="btn" onclick="closeHelp()">✕</button>
+    </div>
+
+    <div class="help-item" style="--hc:var(--c1)">
+      <h3>BFS — Breadth-First Search</h3>
+      <p>Recorre el grafo nivel por nivel desde un nodo inicial usando una cola (FIFO).
+         Explora todos los vecinos antes de avanzar. Ideal para analizar propagación por capas.</p>
+      <span class="complexity">O(V + E)</span>
+    </div>
+
+    <div class="help-item" style="--hc:var(--c1)">
+      <h3>DFS — Depth-First Search</h3>
+      <p>Recorre el grafo siguiendo cadenas profundas antes de retroceder usando recursión.
+         Ideal para rastrear cadenas largas de interacciones negativas.</p>
+      <span class="complexity">O(V + E)</span>
+    </div>
+
+    <div class="help-item" style="--hc:var(--c2)">
+      <h3>Dijkstra — Caminos Mínimos</h3>
+      <p>Encuentra los caminos de menor costo desde un nodo fuente a todos los demás.
+         Requiere pesos no negativos. Usa una cola de prioridad.</p>
+      <span class="complexity">O((V+E) log V)</span>
+    </div>
+
+    <div class="help-item" style="--hc:var(--c3)">
+      <h3>Kruskal — Árbol de Expansión Mínima</h3>
+      <p>Ordena aristas por peso y las añade al MST si no forman ciclo,
+         usando Union-Find (conjuntos disjuntos). Garantiza el menor costo total de conexión.</p>
+      <span class="complexity">O(E log E)</span>
+    </div>
+
+    <div class="help-item" style="--hc:var(--c4)">
+      <h3>Ford-Fulkerson — Flujo Máximo</h3>
+      <p>Calcula el flujo máximo entre fuente y sumidero encontrando caminos aumentantes
+         con BFS (variante Edmonds-Karp) e incrementando el flujo iterativamente.</p>
+      <span class="complexity">O(VE²)</span>
+    </div>
+
+    <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px">
+      <p style="font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:700">CÓMO SE ASIGNAN LOS COMPORTAMIENTOS</p>
+      <div style="font-size:11px;color:var(--text2);line-height:1.9">
+        <div>🔴 <strong style="color:#ef4444">Acosador</strong> — Nodo con mayor grado (más conexiones)</div>
+        <div>🟠 <strong style="color:#f97316">Víctima</strong> — Nodo más alejado del acosador (Dijkstra)</div>
+        <div>🟢 <strong style="color:#22c55e">Apoyo</strong> — Vecinos directos de la víctima</div>
+        <div>🔵 <strong style="color:#a78bfa">Espectador</strong> — Vecinos directos del acosador</div>
+        <div>⚫ <strong style="color:#64748b">Neutral</strong> — El resto de nodos</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCRIPTS (order matters)
+════════════════════════════════════════════ -->
+<script src="js/algorithms.js"></script>
+<script src="js/graph.js"></script>
+<script src="js/missions.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
